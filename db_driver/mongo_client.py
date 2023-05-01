@@ -3,7 +3,7 @@ import pymongo
 
 class MongoClient:
     def __init__(self, connection_string: str):
-        self.connection = pymongo.MongoClient(connection_string)
+        self.connection: pymongo.MongoClient = pymongo.MongoClient(connection_string)
 
     @property
     def up(self) -> bool:

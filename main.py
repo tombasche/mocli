@@ -26,11 +26,10 @@ def main():
     while True:
         raw_input = input("> ")
         command = parse(raw_input)
-        if command.error is not None:
-            write(f"Error: {command.error}\n")
+        if not command.ok():
+            write(f"{command.error}\n")
             continue
-        if command.value is None:
-            write(f"Failed to parse command: {raw_input}\n")
+
         output = execute(command.value).output
         if output is None:
             exit(0)
