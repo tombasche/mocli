@@ -1,7 +1,6 @@
 import signal
 from sys import stdout
 
-from command.command import Command, InputCommand
 from command.execute import make_execute
 from db_driver.mongo_client import MongoClient
 from parser.parse import parse

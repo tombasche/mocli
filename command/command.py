@@ -1,5 +1,5 @@
 from enum import StrEnum
-from typing import Optional, TypeVar, Generic
+from typing import TypeVar, Generic
 
 import attr
 
