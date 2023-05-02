@@ -1,20 +1,19 @@
 from enum import StrEnum
-from typing import TypeVar, Generic
 
 import attr
+
+from command.state import CommandState
 
 
 class Command(StrEnum):
     list_databases = "list databases"
     list_collections = "list collections"
+    use_database = "use"
 
     exit = "exit"
 
 
-T = TypeVar("T")
-
-
 @attr.s(auto_attribs=True, frozen=True)
-class InputCommand(Generic[T]):
+class InputCommand:
     command: Command
-    arguments: list[T]
+    next_state: CommandState | None = None

@@ -22,15 +22,16 @@ signal.signal(signal.SIGINT, exit_cli)
 
 def main():
     execute = make_execute(MongoClient("mongodb://localhost:27017"))
-
+    state = None
     while True:
         raw_input = input("> ")
         command = parse(raw_input)
         if not command.ok():
             write(f"{command.error}\n")
             continue
-
-        output = execute(command.value).output
+        unwrapped_command = command.value
+        state = unwrapped_command.next_state or state
+        output = execute(unwrapped_command, state).output
         if output is None:
             exit(0)
         write(render(output))
