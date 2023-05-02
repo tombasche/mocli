@@ -25,6 +25,8 @@ def main():
     state = None
     while True:
         raw_input = input("> ")
+        if raw_input == "":
+            continue
         command = parse(raw_input)
         if not command.ok():
             write(f"{command.error}\n")
