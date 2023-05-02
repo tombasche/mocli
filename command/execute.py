@@ -11,24 +11,26 @@ def make_execute(client: MongoClient) -> Callable[..., Result]:
         input_command: InputCommand, state: CommandState | None = None
     ) -> Result:
         command = input_command.command
+        make_result = result_factory(command)
         match command:
             case Command.list_databases:
-                return Result(input=command, output=client.databases)
+                return make_result(output=client.databases)
             case Command.list_collections:
                 if state is None:
-                    return Result(input=command, output="No database selected")
-                return Result(
-                    input=command,
-                    output=client.collections_for(state.selected_database),
+                    return make_result(output="No database selected")
+                return make_result(
+                    output=client.collections_for(state.selected_database)
                 )
             case Command.use_database:
                 assert state is not None
-                return Result(
-                    input=command, output=f"using {state.selected_database} database"
-                )
+                return make_result(output=f"using {state.selected_database} database")
             case Command.exit:
-                return Result(input=command, output=None)
+                return make_result(output=None)
             case _:
                 raise NotImplementedError(f"Command {command} not implemented")
 
     return execute
+
+
+def result_factory(command: Command) -> Callable[..., Result]:
+    return lambda output: Result(command, output)
